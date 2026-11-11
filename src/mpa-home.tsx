@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import "./tailwind.css";
 import "./styles.css";
 import HomeMPA from "./pages/Home.mpa";
 
