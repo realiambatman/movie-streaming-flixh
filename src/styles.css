@@ -189,6 +189,7 @@ button {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
+  z-index: 30;
 }
 .drawer-backdrop.show {
   opacity: 1;
@@ -279,11 +280,6 @@ button {
 .home {
   padding: 18px 16px 56px;
 }
-.hero {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-}
 .hero-card {
   height: 160px;
   border-radius: 14px;
@@ -304,9 +300,6 @@ button {
 .hero-title {
   margin: 0 0 8px 0;
   font-size: 20px;
-}
-.hero .muted.tiny {
-  font-size: 13px;
 }
 .carousel {
   margin-bottom: 12px;

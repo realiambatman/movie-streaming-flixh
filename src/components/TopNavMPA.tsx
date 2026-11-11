@@ -47,7 +47,7 @@ export default function TopNavMPA() {
         <div className="nav-actions">
           <div className="search desktop-only">
             <span>⌕</span>
-            <input placeholder="Enter keywords..." />
+            <input type="search" aria-label="Search" placeholder="Enter keywords..." />
           </div>
           <button className="icon-btn mobile-only" aria-label="Search">
             ⌕
@@ -76,7 +76,7 @@ export default function TopNavMPA() {
         <div className="drawer-search">
           <div className="search">
             <span>⌕</span>
-            <input placeholder="Enter keywords..." />
+            <input type="search" aria-label="Search" placeholder="Enter keywords..." />
           </div>
         </div>
         <nav className="drawer-nav">

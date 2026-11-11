@@ -14,9 +14,10 @@ export default function Landing() {
         <section className="small-copy">
           <h3>Watch Movies and TV Shows Online Free</h3>
           <p className="muted">
-            This is a compact demo inspired by your screenshots. Buttons and
-            texts are small, spacing is tight, and the layout is dark for high
-            contrast.
+            This is a compact front-end demo. Nothing here can be played: the
+            titles are sample data and the images are random placeholders.
+            Buttons and texts are small, spacing is tight, and the layout is
+            dark for high contrast.
           </p>
         </section>
       </div>
