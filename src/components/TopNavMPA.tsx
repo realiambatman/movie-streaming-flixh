@@ -1,105 +1,140 @@
-import React from "react";
+import { useEffect, useRef, useState } from "react";
+import Logo from "./Logo";
+import { CloseIcon, MenuIcon, SearchIcon } from "./Icons";
+
+const links = [
+  { label: "Home", href: "/home/" },
+  { label: "Genre", href: "#" },
+  { label: "Country", href: "#" },
+  { label: "Films", href: "#" },
+  { label: "Series", href: "#" },
+  { label: "Top rated", href: "#" },
+];
 
 export default function TopNavMPA() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const drawerSearch = useRef<HTMLInputElement>(null);
   const pathname =
     typeof window !== "undefined" ? window.location.pathname : "/";
   const isInfo = pathname === "/" || pathname.endsWith("/index.html");
+  const isHome = pathname.startsWith("/home");
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const openSearch = () => {
+    setOpen(true);
+    // Wait for the drawer to become visible before moving focus into it.
+    window.setTimeout(() => drawerSearch.current?.focus(), 60);
+  };
 
   return (
     <>
       <header className="nav">
-        <div className="brand">
-          <button
-            className="icon-btn menu-toggle"
-            aria-label="Menu"
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-          >
-            ☰
-          </button>
-          <div className="logo">FHQ</div>
-          <span className="brand-text">FLIXHQ</span>
-        </div>
-        <div className="nav-center">
-          <a className="menu-item" href="/home/">
-            Home
-          </a>
-          <a className="menu-item" href="#">
-            Genre
-          </a>
-          <a className="menu-item" href="#">
-            Country
-          </a>
-          <a className="menu-item" href="#">
-            Movies
-          </a>
-          <a className="menu-item" href="#">
-            TV Shows
-          </a>
-          <a className="menu-item" href="#">
-            Top IMDB
-          </a>
-          <a className="menu-item" href="#">
-            Android App
-          </a>
-        </div>
+        <button
+          type="button"
+          className="icon-btn nav-menu"
+          aria-label="Open menu"
+          aria-expanded={open}
+          aria-controls="site-drawer"
+          onClick={() => setOpen(true)}
+        >
+          <MenuIcon />
+        </button>
+        <a className="nav-brand" href="/index.html" aria-label="FLIX Mini, about this demo">
+          <Logo />
+        </a>
+        <nav className="nav-links" aria-label="Main">
+          {links.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              aria-current={link.href === "/home/" && isHome ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
         <div className="nav-actions">
-          <div className="search desktop-only">
-            <span>⌕</span>
-            <input type="search" aria-label="Search" placeholder="Enter keywords..." />
-          </div>
-          <button className="icon-btn mobile-only" aria-label="Search">
-            ⌕
+          <form
+            className="search nav-search"
+            role="search"
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <SearchIcon size={16} />
+            <input type="search" aria-label="Search" placeholder="Search sample titles" />
+          </form>
+          <button
+            type="button"
+            className="icon-btn nav-search-btn"
+            aria-label="Search"
+            onClick={openSearch}
+          >
+            <SearchIcon />
           </button>
-          <a className={isInfo ? "active" : ""} href="/index.html">
-            Info
+          <a
+            className="nav-info"
+            href="/index.html"
+            aria-current={isInfo ? "page" : undefined}
+          >
+            About
           </a>
         </div>
       </header>
 
       <div
-        className={`drawer-backdrop ${open ? "show" : ""}`}
+        className={`drawer-backdrop${open ? " is-open" : ""}`}
         onClick={() => setOpen(false)}
       />
-      <aside className={`drawer ${open ? "open" : ""}`} aria-hidden={!open}>
-        <div className="drawer-header">
-          <span className="brand-text">Menu</span>
+      <aside
+        id="site-drawer"
+        className={`drawer${open ? " is-open" : ""}`}
+        aria-label="Menu"
+        aria-hidden={!open}
+      >
+        <div className="drawer-head">
+          <Logo size={24} />
           <button
+            type="button"
             className="icon-btn"
-            aria-label="Close"
+            aria-label="Close menu"
             onClick={() => setOpen(false)}
           >
-            ✕
+            <CloseIcon />
           </button>
         </div>
-        <div className="drawer-search">
-          <div className="search">
-            <span>⌕</span>
-            <input type="search" aria-label="Search" placeholder="Enter keywords..." />
-          </div>
-        </div>
-        <nav className="drawer-nav">
-          <a href="/home/" onClick={() => setOpen(false)}>
-            Home
-          </a>
-          <a href="#" onClick={() => setOpen(false)}>
-            Genre
-          </a>
-          <a href="#" onClick={() => setOpen(false)}>
-            Country
-          </a>
-          <a href="#" onClick={() => setOpen(false)}>
-            Movies
-          </a>
-          <a href="#" onClick={() => setOpen(false)}>
-            TV Shows
-          </a>
-          <a href="#" onClick={() => setOpen(false)}>
-            Top IMDB
-          </a>
-          <a href="#" onClick={() => setOpen(false)}>
-            Android App
+        <form className="search" role="search" onSubmit={(e) => e.preventDefault()}>
+          <SearchIcon size={16} />
+          <input
+            ref={drawerSearch}
+            type="search"
+            aria-label="Search"
+            placeholder="Search sample titles"
+          />
+        </form>
+        <nav className="drawer-links" aria-label="Menu">
+          {links.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              aria-current={link.href === "/home/" && isHome ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
+              {link.label}
+            </a>
+          ))}
+          <a
+            href="/index.html"
+            aria-current={isInfo ? "page" : undefined}
+            onClick={() => setOpen(false)}
+          >
+            About this demo
           </a>
         </nav>
       </aside>
